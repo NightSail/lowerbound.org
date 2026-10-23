@@ -1,0 +1,78 @@
+extends layout.pug
+
+block content
+	.hero
+		.hero-document
+			p.eyebrow Write the bounds check no compiler will
+			article#manifesto.manifesto(aria-label='Current manifesto')
+				!= current.manifesto.leading
+				ul
+					each commitment in current.manifesto.commitments
+						li!= commitment
+				!= current.manifesto.trailing
+			p.bound-mark
+				span.bound-label lower bound
+			p
+				code.bound-digest b3:#{current.digest} (URL-safe Base64)
+
+	.guidance
+		section#what(aria-labelledby='what-heading')
+			h2#what-heading What
+			p
+				| Engineers get asked, regularly, to ship things they know are wrong: the metric that flatters, the review skipped to save a week, the dark pattern that converts. Saying no is expensive when there is nothing to point at.
+			p
+				| Lower Bound is something to point at. A professional floor, stated in public: the responsibilities a person accepts, and the work they will not do, whoever asks. It is personal, voluntary, and theirs. Nobody can hand it to them, and nobody can take it away.
+			p
+				| The name comes from computer science. A lower bound is the edge of valid memory; past it is an access violation, not merely a warning. The same idea applies here. These are not preferences to be traded against a deadline.
+			p
+				| Engineers in other fields take oaths and hold licenses. Software engineers mostly do not. Lower Bound is not an oath, and it asks for something smaller and more durable: state the line in public, and keep it.
+			p
+				| Lower Bound is a personal commitment, held in public. A person states the line under their own name or a pseudonym, and publishes it where others can find it. Its weight comes from everyone who does the same. The declaration is the credential.
+
+		section#how(aria-labelledby='how-heading')
+			h2#how-heading How
+			ol.steps
+				li
+					strong Read it.
+					|  Read the whole manifesto to know what you are putting your name on. Do not commit to text you would not act on; a commitment you cannot keep is worse than none.
+				li
+					strong Make it yours.
+					|  Take the #[a(href='#commitment') template below]: add your name (pseudonym is okay), and publish it where you control it. Keep the digest alongside, so anyone can check the text you committed to.
+				li
+					strong Say it in public.
+					|  Link "I have a Lower Bound" to your commitment: blog, GitHub profile, even resume. That is the entire mechanism. A floor is real when people can see who is standing on it.
+			p
+				| You need no one's permission. If you want more than a public post, sign the statement with a cryptographic key and publish the signature with your key.
+
+			section#commitment.reference-section(aria-labelledby='commitment-heading')
+				h3#commitment-heading Commitment template
+				.commitment-grid
+					.section-body
+						p
+							| Replace #[code= '[name]'] with your name or a pseudonym; leave the digest and URL as they are. Those lines bind your words to this exact text. Where you publish the result is up to you: a page, a repository, a profile.
+						pre.commitment-template
+							code!= current.signingTemplateHtml
+
+			section#signing.reference-section(aria-labelledby='signing-heading')
+				h3#signing-heading Signing (optional)
+				.section-body
+					p
+						| A signature does not strengthen the commitment; it ties it to a durable identity. A reader can confirm that a specific key signed a specific text. Sign the commitment you wrote, not the template and not the digest alone:
+					pre
+						code gpg --armor --detach-sign/--clearsign commitment.md
+					pre
+						code sq sign --signature-file=commitment.md.sig/--cleartext commitment.md
+					p
+						| Publish the statement and the signature together. Then the commitment can be verified later without trusting this site or asking us.
+					p
+						| A valid signature proves that the key signed that text. It does not prove who the person is, when they signed, or whether they have lived up to it. The commitment rests on the statement and the public record, not on the cryptography.
+
+			section#verify.reference-section(aria-labelledby='verify-heading')
+				h3#verify-heading Checking a commitment
+				.section-body
+					p
+						| Anyone can check a commitment against the text it names. The digest covers the exact bytes of the original document, whitespace and line endings included, and is written as URL-safe base64. Recompute it from the published document:
+					pre
+						code!= current.digestCommandHtml
+					p
+						| The first line is the URL this page publishes; the second labels the hash recomputed from the bytes just fetched. The two hashes should line up. It is the commitment you hold, not this page, that the digest has to match.

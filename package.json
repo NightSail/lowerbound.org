@@ -1,0 +1,15 @@
+{
+	"name": "lowerbound.org",
+	"private": true,
+	"type": "module",
+	"license": "ISC",
+	"scripts": {
+		"build": "bun build.js",
+		"dev": "bun build.js --dev",
+		"test": "bun test"
+	},
+	"dependencies": {
+		"marked": "18.0.13",
+		"pug": "3.0.4"
+	}
+}

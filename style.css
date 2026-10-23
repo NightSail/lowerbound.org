@@ -1,0 +1,443 @@
+:root {
+	color-scheme: light;
+	--paper: #f8f6f1;
+	--ink: #1c1e1f;
+	--muted: #5f6668;
+	--rule: #dcd8cf;
+	--accent: #c2410c;
+	--field: #efebe2;
+	/* In rem, not ch: ch resolves against each element's font-size, so code at 0.875rem
+	   would otherwise render narrower than body text. Opens with the viewport. */
+	--measure: clamp(40.8rem, 60vw, 52.8rem);
+	--measure-wide: clamp(76ch, 68vw, 104ch);
+	font-family: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', monospace;
+	/* 16px on ~1280px viewports, ramping to 18px on ~2560px high-density panels */
+	font-size: clamp(1rem, 0.875rem + 0.15625vw, 1.125rem);
+	font-variant-ligatures: none;
+	line-height: 1.65;
+	background: var(--paper);
+	color: var(--ink);
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	overflow-wrap: anywhere;
+}
+
+::selection {
+	background: var(--ink);
+	color: var(--paper);
+}
+
+.site {
+	max-width: 84rem;
+	margin-inline: auto;
+	padding-inline: clamp(1.25rem, 4vw, 3rem);
+}
+
+main {
+	padding-block: 3rem 4rem;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol {
+	margin: 0 0 1rem;
+}
+
+h1 {
+	font-size: clamp(1.6rem, 6vw, 2.4rem);
+	font-weight: 700;
+	line-height: 1.15;
+	letter-spacing: 0.01em;
+	text-transform: uppercase;
+}
+
+/* Section rules: label on the left, hairline running to the right margin. */
+h2 {
+	display: flex;
+	align-items: center;
+	gap: 1.5ch;
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: var(--accent);
+	margin-bottom: 1.5rem;
+}
+
+h2::after {
+	content: '';
+	flex: 1 1 auto;
+	height: 1px;
+	background: var(--rule);
+}
+
+h3 {
+	font-size: 1rem;
+	font-weight: 700;
+}
+
+a {
+	color: inherit;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.25em;
+	text-decoration-color: var(--muted);
+}
+
+a:hover {
+	color: var(--accent);
+	text-decoration-color: currentColor;
+}
+
+:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 3px;
+}
+
+:target {
+	scroll-margin-top: 2rem;
+}
+
+.skip-link {
+	position: absolute;
+	top: 0.5rem;
+	left: 0.5rem;
+	z-index: 1;
+	padding: 0.5rem 1rem;
+	background: var(--ink);
+	color: var(--paper);
+	transform: translateY(-200%);
+}
+
+.skip-link:focus {
+	transform: translateY(0);
+}
+
+.eyebrow {
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 0.5rem 2ch;
+	margin-bottom: 1rem;
+	font-size: 0.75rem;
+	text-transform: uppercase;
+	letter-spacing: 0.12em;
+	color: var(--muted);
+}
+
+/* Wider pages put the manifesto against a sticky rail of record links. */
+.hero {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 2.5rem;
+}
+
+.hero > * {
+	min-width: 0;
+}
+
+@media (min-width: 900px) {
+	.hero {
+		grid-template-columns: minmax(0, 44rem) minmax(13rem, 17rem);
+		justify-content: space-between;
+		align-items: start;
+		gap: 3rem 4rem;
+	}
+}
+
+/* The manifesto sits inside a measured field: open corners above, the bound below. */
+.manifesto {
+	position: relative;
+	padding-block: 2rem 2.75rem;
+	border-bottom: 6px solid var(--accent);
+}
+
+.manifesto::before,
+.manifesto::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	width: 0.6rem;
+	height: 0.6rem;
+	border-top: 2px solid var(--accent);
+}
+
+.manifesto::before {
+	left: 0;
+	border-left: 2px solid var(--accent);
+}
+
+.manifesto::after {
+	right: 0;
+	border-right: 2px solid var(--accent);
+}
+
+.manifesto > h1 + ul {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.25rem 3ch;
+	list-style: none;
+	padding: 0;
+	font-size: 0.75rem;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	color: var(--muted);
+}
+
+.manifesto > hr {
+	margin: 1.75rem 0;
+	border: 0;
+	border-top: 1px solid var(--rule);
+}
+
+.manifesto > hr + p {
+	margin-bottom: 1.75rem;
+	padding-left: 2.5ch;
+	border-left: 3px solid var(--accent);
+	font-size: 1.05rem;
+	font-weight: 700;
+}
+
+.manifesto > p + ul {
+	list-style-type: square;
+	margin: 0;
+	padding-left: 2.5ch;
+}
+
+.manifesto > p + ul > li {
+	padding-left: 0.75ch;
+	margin-bottom: 1rem;
+}
+
+.manifesto > p + ul > li::marker {
+	color: var(--accent);
+}
+
+.manifesto > p + ul > li:last-child {
+	margin-bottom: 0;
+}
+
+.bound-mark {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+	align-items: baseline;
+	gap: 0.25rem 2ch;
+	margin: 0.4rem 0 0;
+	font-size: 0.6875rem;
+}
+
+/* The digest is case-sensitive, so it cannot inherit the mark's uppercase styling. */
+.bound-digest {
+	font-size: inherit;
+	text-transform: none;
+	letter-spacing: normal;
+	color: var(--muted);
+}
+
+.bound-label {
+	text-transform: uppercase;
+	letter-spacing: 0.2em;
+	color: var(--accent);
+}
+
+.guidance {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 3.5rem;
+	margin-top: 4.5rem;
+}
+
+#how > .reference-section {
+	margin-top: 3.5rem;
+}
+
+#how h3 {
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: var(--accent);
+	margin-bottom: 1.25rem;
+}
+
+section p {
+	max-width: var(--measure);
+}
+
+.commitment-grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 1.5rem;
+}
+
+.steps {
+	list-style: none;
+	counter-reset: step;
+	padding: 0;
+	max-width: var(--measure);
+}
+
+.steps li {
+	position: relative;
+	counter-increment: step;
+	padding-left: 4ch;
+	margin-bottom: 1.25rem;
+}
+
+.steps li::before {
+	content: counter(step) '.' / '';
+	position: absolute;
+	left: 0;
+	font-size: 0.8125rem;
+	color: var(--accent);
+}
+
+.steps strong {
+	display: block;
+}
+
+.section-body > :last-child {
+	margin-bottom: 0;
+}
+
+code,
+pre {
+	font-family: inherit;
+}
+
+code {
+	font-size: 0.9em;
+}
+
+/* Clicking any code block selects the whole thing, so it can be copied from the selection. */
+pre {
+	padding: 1.25rem 2ch;
+	margin: 1.5rem 0;
+	border: 1px solid var(--rule);
+	border-top: 2px solid var(--accent);
+	background: var(--field);
+	font-size: 0.875rem;
+	line-height: 1.6;
+	white-space: pre-wrap;
+	max-width: var(--measure-wide);
+	user-select: all;
+}
+
+/* Matches the body text measure; the URL-safe base64 digest is short enough to fit. */
+.commitment-template {
+	max-width: var(--measure);
+}
+
+/* Fill each line to the edge rather than breaking after the URL scheme. */
+.template-url {
+	word-break: break-all;
+}
+
+pre code {
+	font-size: inherit;
+}
+
+.site-footer {
+	margin-top: 4.5rem;
+	padding-block: 1.25rem 2.5rem;
+	border-top: 1px solid var(--rule);
+	color: var(--muted);
+	font-size: 0.75rem;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+}
+
+.site-footer p {
+	margin: 0;
+}
+
+@media (max-width: 480px) {
+	main {
+		padding-block: 2.25rem 3rem;
+	}
+
+	.guidance {
+		gap: 2.75rem;
+		margin-top: 3rem;
+	}
+
+	.manifesto > p + ul {
+		padding-left: 2ch;
+	}
+
+	.steps li {
+		padding-left: 3.5ch;
+	}
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		color-scheme: dark;
+		--paper: #16181a;
+		--ink: #e8e5de;
+		--muted: #9ba1a4;
+		--rule: #33383b;
+		--accent: #f59e0b;
+		--field: #1e2224;
+	}
+}
+
+@media print {
+	:root {
+		color-scheme: light;
+		--paper: #fff;
+		--ink: #000;
+		--muted: #333;
+		--rule: #999;
+		--accent: #000;
+		--field: #fff;
+		font-size: 10pt;
+	}
+
+	.site {
+		max-width: none;
+		padding: 0;
+	}
+
+	.site-footer,
+	.skip-link,
+	.bound-mark {
+		display: none;
+	}
+
+	main {
+		padding: 0;
+	}
+
+	.manifesto {
+		padding-top: 0;
+		border-bottom-width: 3px;
+	}
+
+	.manifesto::before,
+	.manifesto::after,
+	h2::after {
+		display: none;
+	}
+
+	.manifesto > p,
+	.manifesto > ul > li,
+	pre {
+		break-inside: avoid;
+	}
+
+	.guidance {
+		break-before: page;
+	}
+}
